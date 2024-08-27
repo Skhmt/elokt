@@ -18,7 +18,7 @@ async function fetchData() {
 
 	const localDate = new Date(data[0]?.updated_at).toLocaleString()
 
-	if (data && data[0]) setLastUpdate(localDate)
+	setLastUpdate(localDate)
 }
 
 export function LastUpdated() {
