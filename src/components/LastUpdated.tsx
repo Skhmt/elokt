@@ -1,31 +1,26 @@
 import supabase from '../lib/supabase'
 import { useAtom } from 'jotai'
 import { lastUpdate } from '../store/store'
-
-let startedFetch = false
-
-async function fetchData() {
-	const [, setLastUpdate] = useAtom(lastUpdate) // eslint-disable-line
-
-	startedFetch = true
-	const { data, error } = await supabase
-		.from('elo')
-		.select('updated_at')
-		.order('updated_at', { ascending: false })
-		.limit(1)
-
-	if (error) return console.error(error)
-
-	const localDate = new Date(data[0]?.updated_at).toLocaleString()
-
-	setLastUpdate(localDate)
-}
+import { useEffect } from 'react'
 
 export function LastUpdated() {
+	const [getLastUpdate, setLastUpdate] = useAtom(lastUpdate) // eslint-disable-line
 
-	if (!startedFetch) fetchData()
+	useEffect(() => {
+		(async () => {
+			const { data, error } = await supabase
+				.from('elo')
+				.select('updated_at')
+				.order('updated_at', { ascending: false })
+				.limit(1)
 
-	const [getLastUpdate] = useAtom(lastUpdate) // eslint-disable-line
+			if (error) return console.error(error)
+
+			const localDate = new Date(data[0]?.updated_at).toLocaleString()
+
+			setLastUpdate(localDate)
+		})()
+	}, [setLastUpdate])
 
 	return (<>
 		<p>Last Updated: {getLastUpdate}</p>
