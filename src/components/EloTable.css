@@ -1,0 +1,19 @@
+/* input {
+	@apply input;
+} */
+
+/* select {
+	@apply select;
+} */
+
+table {
+	@apply table table-zebra table-xs;
+}
+
+/* label {
+	@apply label;
+} */
+
+button {
+	@apply btn btn-sm !important;
+}
